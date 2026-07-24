@@ -7,8 +7,9 @@ import {
   MessageSquare, 
   Users, 
   Sparkles,
-  ArrowRight
+  ChevronDown
 } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 export const CustomerCare: React.FC = () => {
   const [name, setName] = useState('');
@@ -16,6 +17,7 @@ export const CustomerCare: React.FC = () => {
   const [category, setCategory] = useState('Suggestion');
   const [message, setMessage] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,7 +88,7 @@ export const CustomerCare: React.FC = () => {
             <div className="pt-6 border-t border-slate-100 flex flex-col gap-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Direct Hotline</span>
               <a href="mailto:support@saarthi.ai" className="text-sm font-bold text-[#2563EB] hover:underline flex items-center gap-1.5">
-                <Mail className="w-4 h-4 text-slate-400" />
+                <Mail className="w-4 h-4 text-slate-4-400" />
                 <span>support@saarthi.ai</span>
               </a>
             </div>
@@ -131,19 +133,55 @@ export const CustomerCare: React.FC = () => {
                     />
                   </div>
 
-                  {/* Suggestion Category */}
-                  <div className="flex flex-col gap-1.5">
+                  {/* Suggestion Category - FULLY CUSTOM BEAUTIFUL DROPDOWN */}
+                  <div className="flex flex-col gap-1.5 relative">
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Topic Category</label>
-                    <select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      className="w-full bg-slate-50 hover:bg-slate-100/50 border border-slate-200 hover:border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200 cursor-pointer"
+                    <input type="hidden" name="category" value={category} />
+                    
+                    <button
+                      type="button"
+                      onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                      className="w-full bg-slate-50 hover:bg-slate-100/50 border border-slate-200 hover:border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200 cursor-pointer flex items-center justify-between"
                     >
-                      <option value="Suggestion">General Suggestion</option>
-                      <option value="Scheme Request">Request a New Scheme</option>
-                      <option value="Eligibility Issue">Profile / Eligibility Bug</option>
-                      <option value="Other">Other Query</option>
-                    </select>
+                      <span>
+                        {category === 'Suggestion' && 'General Suggestion'}
+                        {category === 'Scheme Request' && 'Request a New Scheme'}
+                        {category === 'Eligibility Issue' && 'Profile / Eligibility Bug'}
+                        {category === 'Other' && 'Other Query'}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-slate-455 shrink-0" />
+                    </button>
+
+                    {isCategoryDropdownOpen && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setIsCategoryDropdownOpen(false)} />
+                        <div className="absolute z-50 w-full mt-2 bg-white border border-slate-150 rounded-xl shadow-xl p-1.5 flex flex-col gap-1">
+                          {[
+                            { value: 'Suggestion', label: 'General Suggestion' },
+                            { value: 'Scheme Request', label: 'Request a New Scheme' },
+                            { value: 'Eligibility Issue', label: 'Profile / Eligibility Bug' },
+                            { value: 'Other', label: 'Other Query' }
+                          ].map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setCategory(opt.value);
+                                setIsCategoryDropdownOpen(false);
+                              }}
+                              className={cn(
+                                "w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer select-none active:scale-98",
+                                category === opt.value
+                                  ? "text-[#2563EB] bg-blue-50/50"
+                                  : "text-slate-655 hover:bg-slate-50"
+                              )}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {/* Message */}

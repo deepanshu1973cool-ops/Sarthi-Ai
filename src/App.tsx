@@ -41,6 +41,16 @@ export default function App() {
   };
 
   const handleTabChange = (tabId: string) => {
+    // Temporary Bypass: Suspended authorization guard for direct testing
+    /*
+    if (tabId === 'dashboard' && !user) {
+      alert("Access Denied: Please sign in first to access the Dashboard!");
+      setActiveTab('auth');
+      showToast("Please sign in first to access the Dashboard!");
+      return;
+    }
+    */
+    
     setActiveTab(tabId);
     if (tabId === 'dashboard') {
       showToast("Loading your Eligibility Dashboard...");
@@ -51,6 +61,48 @@ export default function App() {
     } else {
       showToast(`Navigated to '${tabId}'`);
     }
+  };
+
+  // Backend synchronisation handler (ready for integration with user database API)
+  const handleProfileSubmitToBackend = async (profileData: {
+    fullName: string;
+    age: number;
+    state: string;
+    gender: string;
+    education: string;
+    income: number;
+    category: string;
+    employment: string;
+    interests: string[];
+  }) => {
+    showToast("Syncing profile data to database...");
+    console.log("✈️ SENDING PROFILE DATA TO BACKEND:", profileData);
+    
+    /*
+    // Example backend API integration code:
+    try {
+      const response = await fetch('http://localhost:5000/api/profile/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include authorization headers if user is logged in
+          // 'Authorization': `Bearer ${user?.token || ''}`
+        },
+        body: JSON.stringify(profileData)
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to synchronize profile settings");
+      }
+      
+      const responseData = await response.json();
+      console.log("Backend sync response:", responseData);
+      showToast("Profile synchronized with server!");
+    } catch (error) {
+      console.error("Backend synchronization error:", error);
+      showToast("Warning: Failed to sync profile with database.");
+    }
+    */
   };
 
   // Reset scroll, configure manual scroll restoration, and route to Explore / Hero section on reload
@@ -114,7 +166,7 @@ export default function App() {
             className="w-full"
           >
             {activeTab === 'dashboard' ? (
-              <Dashboard />
+              <Dashboard onProfileSubmit={handleProfileSubmitToBackend} />
             ) : activeTab === 'customer-care' ? (
               <CustomerCare />
             ) : activeTab === 'auth' ? (

@@ -16,7 +16,7 @@ interface AuthProps {
 
 export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [emailOrPhone, setEmailOrPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -37,10 +37,18 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
 
   const handleEmailPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailOrPhone || !password || (isSignUp && !name)) {
+    if (!email || !password || (isSignUp && !name)) {
       setErrorMsg('Please fill in all fields.');
       return;
     }
+    
+    // Email Validation Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
     setErrorMsg(null);
     setIsLoading(true);
 
@@ -48,8 +56,8 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
     setTimeout(() => {
       setIsLoading(false);
       onLoginSuccess({
-        name: isSignUp ? name : emailOrPhone.split('@')[0],
-        email: emailOrPhone.includes('@') ? emailOrPhone : `${emailOrPhone}@saarthi.ai`
+        name: isSignUp ? name : email.split('@')[0],
+        email: email
       });
     }, 1200);
   };
@@ -246,15 +254,15 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
             </div>
           )}
 
-          {/* Email or Phone */}
+          {/* Email Address */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email or Phone</label>
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
             <input
-              type="text"
+              type="email"
               required
-              placeholder="Enter your email or phone"
-              value={emailOrPhone}
-              onChange={(e) => setEmailOrPhone(e.target.value)}
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-[#FAFAFA] border border-slate-200/90 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 placeholder:text-slate-400 transition-all duration-200"
             />
           </div>
@@ -292,7 +300,7 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#2563EB] hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition-all cursor-pointer select-none text-sm text-center active:scale-98 shadow-sm flex items-center justify-center gap-2 mt-2"
+            className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3.5 rounded-xl transition-all cursor-pointer select-none text-sm text-center active:scale-98 shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:shadow-[0_8px_20px_rgba(15,23,42,0.28)] hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2"
           >
             {isLoading ? (
               <span className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
@@ -317,15 +325,15 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors duration-200 active:scale-98 text-xs font-bold cursor-pointer text-slate-700 bg-white"
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 transition-all duration-200 active:scale-98 text-sm font-semibold cursor-pointer text-slate-700 shadow-sm hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-0.5"
           >
-            <svg className="w-4.5 h-4.5 mr-1" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69a5.74 5.74 0 0 1-2.49 3.77v3.12h4.01c2.34-2.16 3.69-5.32 3.69-8.74Z"/>
               <path fill="#34A853" d="M12 24c3.24 0 5.97-1.08 7.96-2.91l-4.01-3.12c-1.12.75-2.54 1.19-3.95 1.19-3.05 0-5.64-2.06-6.56-4.83H1.31v3.23A12.004 12.004 0 0 0 12 24Z"/>
               <path fill="#FBBC05" d="M5.44 14.33a7.17 7.17 0 0 1 0-4.66V6.44H1.31a12.013 12.013 0 0 0 0 11.12l4.13-3.23Z"/>
               <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.96 1.19 15.24 0 12 0 7.33 0 3.28 2.68 1.31 6.44l4.13 3.23c.92-2.77 3.51-4.83 6.56-4.83Z"/>
             </svg>
-            <span>Google</span>
+            <span>Continue with Google</span>
           </button>
         </div>
 

@@ -166,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   type="button"
                   onClick={onCtaClick}
-                  className="px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold text-white bg-[#0F172A] hover:bg-black transition-all duration-200 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                  className="px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-sm sm:text-base font-bold text-white bg-black hover:bg-slate-900 transition-all duration-200 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 shadow-[0_4px_12px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.22)] hover:-translate-y-0.5"
                 >
                   {ctaText}
                 </button>
@@ -254,7 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         setMobileMenuOpen(false);
                         if (onCtaClick) onCtaClick();
                       }}
-                      className="w-full py-3 rounded-full text-sm font-semibold text-white bg-[#0F172A] hover:bg-black transition-all flex items-center justify-center cursor-pointer"
+                      className="w-full py-3.5 rounded-full text-sm font-bold text-white bg-black hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:scale-98"
                     >
                       {ctaText}
                     </button>

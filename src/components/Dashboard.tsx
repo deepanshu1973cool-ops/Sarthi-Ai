@@ -60,6 +60,7 @@ interface Scheme {
   categories?: string[];
   employmentStatus?: string[];
   documents: string[]; // Required documents list
+  deadline?: string; // Application deadline
 }
 
 const SCHEMES_DB: Scheme[] = [
@@ -72,7 +73,8 @@ const SCHEMES_DB: Scheme[] = [
     maxIncome: 250000,
     categories: ['SC'],
     educationLevels: ['12th', 'Graduate', 'Masters'],
-    documents: ['Aadhaar Card', 'SC Caste Certificate', 'Tehsildar Income Certificate', 'Previous Marksheet']
+    documents: ['Aadhaar Card', 'SC Caste Certificate', 'Tehsildar Income Certificate', 'Previous Marksheet'],
+    deadline: '31 Aug 2026'
   },
   {
     id: 'pmrf',
@@ -83,7 +85,8 @@ const SCHEMES_DB: Scheme[] = [
     maxAge: 30,
     educationLevels: ['Masters', 'Doctorate'],
     employmentStatus: ['Student'],
-    documents: ['PMRF Project Proposal', 'GATE/NET Score Card', 'Recommendation Letters', 'Masters Degree Certificate']
+    documents: ['PMRF Project Proposal', 'GATE/NET Score Card', 'Recommendation Letters', 'Masters Degree Certificate'],
+    deadline: '15 Sep 2026'
   },
   {
     id: 'nmmss',
@@ -93,7 +96,8 @@ const SCHEMES_DB: Scheme[] = [
     benefitValue: 12000,
     maxIncome: 350000,
     educationLevels: ['10th'],
-    documents: ['Class 9 Marksheet', 'Income Certificate', 'Aadhaar Card', 'Bonafide Student Certificate']
+    documents: ['Class 9 Marksheet', 'Income Certificate', 'Aadhaar Card', 'Bonafide Student Certificate'],
+    deadline: '30 Nov 2026'
   },
   {
     id: 'pm-mudra',
@@ -125,7 +129,8 @@ const SCHEMES_DB: Scheme[] = [
     benefitValue: 100000,
     educationLevels: ['Graduate', 'Masters', 'Doctorate'],
     employmentStatus: ['Entrepreneur'],
-    documents: ['DPIIT Recognition Certificate', 'Detailed Pitch Deck', 'Company Audit Statement', 'Founder PAN Card']
+    documents: ['DPIIT Recognition Certificate', 'Detailed Pitch Deck', 'Company Audit Statement', 'Founder PAN Card'],
+    deadline: '15 Oct 2026'
   },
   {
     id: 'state-welfare',
@@ -136,7 +141,8 @@ const SCHEMES_DB: Scheme[] = [
     states: ['Maharashtra', 'Delhi'],
     categories: ['OBC', 'SC', 'ST', 'EWS'],
     educationLevels: ['12th', 'Graduate', 'Masters'],
-    documents: ['Domicile Certificate', 'Aadhaar Card', 'Caste/Category Certificate', 'Current Fee Receipt']
+    documents: ['Domicile Certificate', 'Aadhaar Card', 'Caste/Category Certificate', 'Current Fee Receipt'],
+    deadline: '20 Dec 2026'
   },
   {
     id: 'women-entrepreneurship',
@@ -151,14 +157,31 @@ const SCHEMES_DB: Scheme[] = [
   }
 ];
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onProfileSubmit?: (data: {
+    fullName: string;
+    age: number;
+    state: string;
+    gender: string;
+    education: string;
+    income: number;
+    category: string;
+    employment: string;
+    interests: string[];
+  }) => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ onProfileSubmit }) => {
   // 1. Local Form State (inputs edit status)
+  const [formFullName, setFormFullName] = useState<string>('Deepanshu Sharma');
   const [formAge, setFormAge] = useState<number>(20);
   const [formState, setFormState] = useState<string>('Maharashtra');
+  const [formGender, setFormGender] = useState<string>('Male');
   const [formEducation, setFormEducation] = useState<string>('Graduate');
   const [formIncome, setFormIncome] = useState<number>(180000);
   const [formCategory, setFormCategory] = useState<string>('SC');
   const [formEmployment, setFormEmployment] = useState<string>('Student');
+  const [formInterests, setFormInterests] = useState<string[]>(['Startup', 'Scholarships']);
 
   // Custom Dropdown Open States
   const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
@@ -167,12 +190,15 @@ export const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   // 2. Committed Matching State (updates ONLY on form submit click)
+  const [fullName, setFullName] = useState<string>('Deepanshu Sharma');
   const [age, setAge] = useState<number>(20);
   const [state, setState] = useState<string>('Maharashtra');
+  const [gender, setGender] = useState<string>('Male');
   const [education, setEducation] = useState<string>('Graduate');
   const [income, setIncome] = useState<number>(180000);
   const [category, setCategory] = useState<string>('SC');
   const [employment, setEmployment] = useState<string>('Student');
+  const [interests, setInterests] = useState<string[]>(['Startup', 'Scholarships']);
 
   // State to track if the dashboard has been activated by user submit click
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
@@ -246,15 +272,36 @@ export const Dashboard: React.FC = () => {
     };
   }, [matchedSchemes, totalBenefitValue]);
 
-  const handleProfileSubmit = (e: React.FormEvent) => {
+  const handleProfileSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFullName(formFullName);
     setAge(formAge);
     setState(formState);
+    setGender(formGender);
     setEducation(formEducation);
     setIncome(formIncome);
     setCategory(formCategory);
     setEmployment(formEmployment);
+    setInterests(formInterests);
     setHasSubmitted(true);
+
+    // Form data packaging for backend submission (ready for API integration)
+    const profilePayload = {
+      fullName: formFullName,
+      age: formAge,
+      state: formState,
+      gender: formGender,
+      education: formEducation,
+      income: formIncome,
+      category: formCategory,
+      employment: formEmployment,
+      interests: formInterests
+    };
+    
+    console.log("Submitting Profile Settings to backend API:", profilePayload);
+    if (onProfileSubmit) {
+      onProfileSubmit(profilePayload);
+    }
   };
 
   const filteredStates = useMemo(() => {
@@ -308,7 +355,7 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="w-full bg-[#F5F5F7]/70 py-12 px-6 sm:px-10 lg:px-12 font-sans text-slate-800 relative z-10 pt-28">
-      <div className="max-w-7xl mx-auto flex flex-col gap-10">
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-10">
         
         {/* HEADER SUMMARY - Dashboard only */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -329,12 +376,12 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* TWO COLUMN INTERACTIVE GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          {/* LEFT SIDEBAR: PROFILE DATA INPUT CARD (4/12 cols) */}
+          {/* LEFT SIDEBAR: PROFILE DATA INPUT CARD (5/12 cols) */}
           <form 
             onSubmit={handleProfileSubmit}
-            className="lg:col-span-4 bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 sm:p-8 flex flex-col gap-6"
+            className="lg:col-span-5 bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 sm:p-8 flex flex-col gap-6"
           >
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -350,25 +397,54 @@ export const Dashboard: React.FC = () => {
 
             {/* Input fields */}
             <div className="flex flex-col gap-4">
+              
+              {/* Full Name */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Full Name</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formFullName}
+                  onChange={(e) => setFormFullName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="w-full bg-slate-50 hover:bg-slate-100/50 border border-slate-200 hover:border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200 font-medium text-slate-700"
+                />
+              </div>
+
               {/* Age */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Age</label>
                 <div className="flex items-center gap-4">
                   <input
                     type="range"
+                    name="age"
                     min="10"
-                    max="50"
+                    max="100"
                     value={formAge}
                     onChange={(e) => setFormAge(Number(e.target.value))}
                     className="flex-1 accent-[#2563EB] h-1.5 bg-slate-100 rounded-lg cursor-pointer"
                   />
-                  <span className="font-bold text-slate-800 text-sm w-8 text-right">{formAge} yrs</span>
+                  <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 px-2 py-1 rounded-lg shrink-0">
+                    <input
+                      type="number"
+                      min="10"
+                      max="100"
+                      value={formAge || ''}
+                      onChange={(e) => {
+                        const val = e.target.value === '' ? 0 : Number(e.target.value);
+                        setFormAge(val);
+                      }}
+                      className="w-8 text-right bg-transparent text-sm font-bold text-slate-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-none p-0"
+                    />
+                    <span className="text-xs font-semibold text-slate-400">yrs</span>
+                  </div>
                 </div>
               </div>
 
               {/* State - WITH CUSTOM SEARCH DROPDOWN OVERLAY */}
               <div className="flex flex-col gap-1.5 relative">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">State of Residence</label>
+                <input type="hidden" name="state" value={formState} />
                 
                 <button
                   type="button"
@@ -377,7 +453,7 @@ export const Dashboard: React.FC = () => {
                     setIsEducationDropdownOpen(false);
                     setIsEmploymentDropdownOpen(false);
                   }}
-                  className="w-full bg-slate-50 hover:bg-slate-100/60 border border-slate-200 hover:border-slate-350 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200 cursor-pointer flex items-center justify-between"
+                  className="w-full bg-slate-50 hover:bg-slate-100/60 border border-slate-200 hover:border-slate-355 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200 cursor-pointer flex items-center justify-between"
                 >
                   <span>{formState}</span>
                   <ChevronDown className="w-4 h-4 text-slate-455 shrink-0" />
@@ -430,9 +506,33 @@ export const Dashboard: React.FC = () => {
                 )}
               </div>
 
+              {/* Gender */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Gender</label>
+                <input type="hidden" name="gender" value={formGender} />
+                <div className="grid grid-cols-3 gap-2">
+                  {['Male', 'Female', 'Other'].map((gen) => (
+                    <button
+                      key={gen}
+                      type="button"
+                      onClick={() => setFormGender(gen)}
+                      className={cn(
+                        "py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer active:scale-95",
+                        formGender === gen
+                          ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                          : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                      )}
+                    >
+                      {gen}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Education Level - FULLY CUSTOM BEAUTIFUL DROPDOWN */}
               <div className="flex flex-col gap-1.5 relative">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Current Education</label>
+                <input type="hidden" name="education" value={formEducation} />
                 
                 <button
                   type="button"
@@ -450,7 +550,7 @@ export const Dashboard: React.FC = () => {
                     {formEducation === 'Masters' && "Masters (Master's Degree)"}
                     {formEducation === 'Doctorate' && "Doctorate (Ph.D.)"}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-slate-450 shrink-0" />
+                  <ChevronDown className="w-4 h-4 text-slate-455 shrink-0" />
                 </button>
 
                 {isEducationDropdownOpen && (
@@ -475,7 +575,7 @@ export const Dashboard: React.FC = () => {
                             "w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer select-none active:scale-98",
                             formEducation === opt.value
                               ? "text-[#2563EB] bg-blue-50/50"
-                              : "text-slate-650 hover:bg-slate-50"
+                              : "text-slate-655 hover:bg-slate-50"
                           )}
                         >
                           {opt.label}
@@ -492,6 +592,7 @@ export const Dashboard: React.FC = () => {
                 <div className="flex items-center gap-4">
                   <input
                     type="range"
+                    name="income"
                     min="0"
                     max="1000000"
                     step="25000"
@@ -499,15 +600,28 @@ export const Dashboard: React.FC = () => {
                     onChange={(e) => setFormIncome(Number(e.target.value))}
                     className="flex-1 accent-[#2563EB] h-1.5 bg-slate-100 rounded-lg cursor-pointer"
                   />
-                  <span className="font-bold text-slate-800 text-sm min-w-[70px] text-right">
-                    ₹{(formIncome / 1000).toFixed(0)}k
-                  </span>
+                  <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">
+                    <span className="text-xs font-bold text-slate-400">₹</span>
+                    <input
+                      type="number"
+                      min="0"
+                      max="10000000"
+                      step="5000"
+                      value={formIncome || ''}
+                      onChange={(e) => {
+                        const val = e.target.value === '' ? 0 : Number(e.target.value);
+                        setFormIncome(val);
+                      }}
+                      className="w-16 text-right bg-transparent text-sm font-bold text-slate-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-none p-0"
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Category */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Social Category</label>
+                <input type="hidden" name="category" value={formCategory} />
                 <div className="grid grid-cols-3 gap-2">
                   {['General', 'OBC', 'SC', 'ST', 'EWS'].map((cat) => (
                     <button
@@ -527,9 +641,10 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Employment Status - FULLY CUSTOM BEAUTIFUL DROPDOWN */}
+              {/* Occupation / Employment Status - FULLY CUSTOM BEAUTIFUL DROPDOWN */}
               <div className="flex flex-col gap-1.5 relative">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Employment Status</label>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Occupation</label>
+                <input type="hidden" name="employment" value={formEmployment} />
                 
                 <button
                   type="button"
@@ -581,6 +696,38 @@ export const Dashboard: React.FC = () => {
                 )}
               </div>
 
+              {/* Interests (Startup, Scholarships, Gov Schemes, Skill Development) */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Interests</label>
+                <input type="hidden" name="interests" value={formInterests.join(',')} />
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {['Startup', 'Scholarships', 'Gov Schemes', 'Skill Development'].map((interest) => {
+                    const isSelected = formInterests.includes(interest);
+                    return (
+                      <button
+                        key={interest}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            setFormInterests(formInterests.filter(i => i !== interest));
+                          } else {
+                            setFormInterests([...formInterests, interest]);
+                          }
+                        }}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer active:scale-95",
+                          isSelected
+                            ? "bg-[#2563EB] border-[#2563EB] text-white shadow-sm"
+                            : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                        )}
+                      >
+                        {interest}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Match CTA button below the Profile Settings */}
               <button
                 type="submit"
@@ -593,14 +740,14 @@ export const Dashboard: React.FC = () => {
             </div>
           </form>
 
-          {/* RIGHT SIDE: DASHBOARD CHARTS (8/12 cols) */}
-          <div className="lg:col-span-8 flex flex-col gap-8">
+          {/* RIGHT SIDE: DASHBOARD CHARTS (7/12 cols) */}
+          <div className="lg:col-span-7 flex flex-col justify-between gap-8 h-full">
             
             {/* TOP ROW: ELIGIBILITY FUNNEL & TOTAL VALUE */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               
               {/* Funnel Chart Card (Span 2) - SHOWING CONNECTING GRAPH */}
-              <div className="md:col-span-2 bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 flex flex-col justify-between min-h-[360px] relative overflow-hidden">
+              <div className="md:col-span-2 bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 flex flex-col justify-between min-h-[440px] relative overflow-hidden">
                 <div className="flex items-center justify-between pb-4">
                   <span className="font-bold text-base text-slate-900 tracking-tight">Eligibility Funnel</span>
                   <div className="w-8 h-8 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center cursor-pointer hover:bg-slate-100">
@@ -639,7 +786,7 @@ export const Dashboard: React.FC = () => {
                 )}
 
                 {/* Vertical Step Funnel Bars */}
-                <div className="flex items-end justify-between h-56 px-2 relative z-10">
+                <div className="flex items-end justify-between h-72 px-2 relative z-10">
                   {funnelBars.map((bar, idx) => (
                     <div key={idx} className="flex flex-col items-center gap-2 flex-1 group/bar relative">
                       <span className="text-[9px] font-medium text-slate-400 text-center uppercase tracking-wider leading-none">
@@ -683,7 +830,7 @@ export const Dashboard: React.FC = () => {
               </div>
 
               {/* Total Benefit Card (Span 1) */}
-              <div className="bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 flex flex-col justify-between min-h-[360px]">
+              <div className="bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 flex flex-col justify-between min-h-[440px]">
                 <div className="flex flex-col gap-1">
                   <span className="font-bold text-base text-slate-900 tracking-tight">Total Benefit Value</span>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Projected Annual Savings</span>
@@ -761,8 +908,8 @@ export const Dashboard: React.FC = () => {
 
             </div>
 
-            {/* BOTTOM ROW: STAIR CHART & TRANSACTIONS GRID & INSIGHTS (RESTORED TO 3-COLS, INCOME CARD REMOVED) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* MIDDLE ROW: STAIR CHART & TRANSACTIONS GRID (EXPANDED TO 2-COLS) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
               {/* Retention Stair Chart Card - DYNAMIC BASED ON USER DATA */}
               <div className="bg-white rounded-[24px] border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.03)] p-6 flex flex-col justify-between min-h-[280px]">
@@ -854,37 +1001,39 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Insights Gradient Card - REMOVED OPTIMIZE BUTTON */}
-              <div 
-                className="rounded-[24px] p-6 flex flex-col justify-between min-h-[280px] text-white relative overflow-hidden shadow-[0_12px_36px_rgba(0,0,0,0.06)]"
-                style={{
-                  background: 'linear-gradient(135deg, #FF9C7D 0%, #F46B84 50%, #7EA8FF 100%)'
-                }}
-              >
-                <div className="absolute inset-0 bg-white/5 pointer-events-none" />
+            </div>
 
-                <div className="flex items-center justify-between relative z-10">
-                  <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9.5px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            {/* BOTTOM ROW: ELIGIBILITY SCORE INSIGHT CARD (FULL-WIDTH BELOW THEM) */}
+            <div 
+              className="rounded-[24px] p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 min-h-[160px] text-white relative overflow-hidden shadow-[0_12px_36px_rgba(0,0,0,0.06)] animate-none"
+              style={{
+                background: 'linear-gradient(135deg, #FF9C7D 0%, #F46B84 50%, #7EA8FF 100%)'
+              }}
+            >
+              <div className="absolute inset-0 bg-white/5 pointer-events-none" />
+
+              <div className="flex flex-col gap-2 relative z-10 max-w-xl">
+                <div className="flex items-center gap-2">
+                  <span className="bg-white/15 backdrop-blur-md border border-white/20 text-white text-[9.5px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
                     Eligibility Score
                   </span>
-                  <Sparkles className="w-5 h-5 text-white/80" />
+                  <Sparkles className="w-4 h-4 text-white/80" />
                 </div>
-
-                <div className="my-2 relative z-10">
-                  <h2 className="text-5xl font-black tracking-tight leading-none">
-                    {displayEligibilityScore}%
-                  </h2>
-                  <p className="text-xs text-white/95 font-medium mt-2 leading-relaxed">
-                    {hasSubmitted 
-                      ? "Excellent match profile. You qualify for high-priority government sponsorships." 
-                      : "Please submit your Profile Settings to calculate your eligibility score."}
-                  </p>
-                </div>
-                
-                {/* Optimize profile button removed - leaving clean spacing */}
-                <div className="h-6" />
+                <p className="text-sm text-white/95 font-medium leading-relaxed mt-1">
+                  {hasSubmitted 
+                    ? "Excellent match profile. You qualify for high-priority government sponsorships." 
+                    : "Please submit your Profile Settings to calculate your eligibility score."}
+                </p>
               </div>
 
+              <div className="relative z-10 sm:text-right flex flex-col sm:items-end justify-center shrink-0">
+                <h2 className="text-5xl sm:text-6xl font-black tracking-tight leading-none">
+                  {displayEligibilityScore}%
+                </h2>
+                <span className="text-[10px] font-bold text-white/70 uppercase tracking-wider mt-1 sm:mt-2">
+                  Overall Compatibility
+                </span>
+              </div>
             </div>
 
           </div>
@@ -910,13 +1059,18 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
               {matchedSchemes.length > 0 ? (
                 matchedSchemes.map((scheme) => {
                   const isExpanded = expandedCardId === scheme.id;
 
                   return (
-                    <div
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       key={scheme.id}
                       className="border border-slate-100 bg-white rounded-[20px] p-6 flex flex-col justify-between gap-4 transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.12)] hover:border-blue-500/20 hover:-translate-y-0.5 group"
                     >
@@ -942,6 +1096,17 @@ export const Dashboard: React.FC = () => {
                         <p className="text-xs text-slate-500 font-normal leading-relaxed mt-1">
                           {scheme.description}
                         </p>
+                        
+                        {/* Deadline Indicator */}
+                        <div className="flex items-center gap-1.5 mt-2.5 bg-slate-50 border border-slate-200/50 rounded-lg px-2.5 py-1 w-fit">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Deadline:</span>
+                          <span className={cn(
+                            "text-[10px] font-bold uppercase tracking-wider",
+                            scheme.deadline ? "text-slate-700" : "text-amber-600"
+                          )}>
+                            {scheme.deadline || "not confiram yet"}
+                          </span>
+                        </div>
                       </div>
 
                       {/* Animated expandable panel for documents */}
@@ -1000,7 +1165,7 @@ export const Dashboard: React.FC = () => {
                           />
                         </button>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })
               ) : (
@@ -1016,7 +1181,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
         ) : (
           /* Locked State Placeholder Card */
