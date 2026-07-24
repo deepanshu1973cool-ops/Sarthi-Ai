@@ -1,0 +1,6 @@
+{
+  "name": "Saarthi",
+  "description": "Government Benefits. Made Simple. Premium Government Opportunity Discovery Platform for Indian citizens.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
