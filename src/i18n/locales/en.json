@@ -1,0 +1,442 @@
+{
+  "common": {
+    "categories": {
+      "scholarship": "Scholarship",
+      "govScheme": "Gov Scheme",
+      "skillProgram": "Skill Program"
+    },
+    "employment": {
+      "student": "Student",
+      "unemployed": "Unemployed",
+      "entrepreneur": "Entrepreneur (Startup / Business)",
+      "employed": "Employed (Salaried)"
+    },
+    "education": {
+      "10th": "10th Standard",
+      "12th": "12th Standard",
+      "graduate": "Graduate (Bachelor's)",
+      "masters": "Masters (Master's Degree)",
+      "doctorate": "Doctorate (Ph.D.)"
+    },
+    "genders": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    },
+    "buttons": {
+      "login": "Login",
+      "logout": "Logout",
+      "cancel": "Cancel & Go Back",
+      "dashboard": "Dashboard",
+      "learnMore": "Learn More",
+      "getStarted": "Get Started",
+      "explore": "Explore Opportunities",
+      "applyNow": "Apply Now (Start Application)",
+      "submit": "Submit Application",
+      "submitted": "Application Submitted",
+      "saveAndContinue": "Save Profile & Continue"
+    },
+    "tagline": "Government Benefits. Made Simple."
+  },
+  "navbar": {
+    "explore": "Explore",
+    "howItWorks": "How It Works",
+    "dashboard": "Dashboard",
+    "customerCare": "Customer Care",
+    "welcome": "Welcome back",
+    "logoutSession": "Logout Session",
+    "syncActive": "Profile Sync Active",
+    "loading": "Loading your profile session...",
+    "login": "Login"
+  },
+  "hero": {
+    "titlePrefix": "Discover India's best",
+    "titles": [
+      "opportunities",
+      "scholarships",
+      "schemes",
+      "benefits",
+      "grants"
+    ],
+    "subtitle": "One simple profile unlocks hundreds of government schemes, scholarships, and welfare programs designed for students, professionals, and entrepreneurs across India.",
+    "cta": "Explore Opportunities"
+  },
+  "opportunities": {
+    "label": "Saarthi Ecosystem",
+    "title": "Opportunities",
+    "cards": {
+      "scholarships": {
+        "title": "Scholarships",
+        "desc": "Unlock scholarships tailored to your academic journey. Discover central, state, and international funding programs designed for students."
+      },
+      "schemes": {
+        "title": "Government Schemes",
+        "desc": "Government benefits designed for your profile. Easily match with eligibility-based state and central initiatives."
+      },
+      "startups": {
+        "title": "Startup Benefits",
+        "desc": "Funding and support for aspiring entrepreneurs. Access government grants, DPIIT benefits, and incubation programs."
+      },
+      "skills": {
+        "title": "Skill Development",
+        "desc": "Learn, upskill, and grow professionally. Match with Skill India certification programs and professional development pathways."
+      },
+      "welfare": {
+        "title": "Welfare Programs",
+        "desc": "Healthcare coverage, citizen assistance, pension structures, and social security programs that support every Indian citizen."
+      }
+    }
+  },
+  "howItWorks": {
+    "label": "Application Path",
+    "title": "How Saarthi Works",
+    "subtitle": "Simple. Personalized. Effortless.",
+    "steps": {
+      "step1": {
+        "title": "01. Create Your Profile.",
+        "desc": "Tell us about yourself once and let Saarthi do the rest.",
+        "bullets": ["Age & State", "Education & Occupation", "Income & Category"]
+      },
+      "step2": {
+        "title": "02. Check Your Eligibility.",
+        "desc": "We automatically match opportunities based on your profile.",
+        "bullets": ["Personalized Eligibility Checks", "Instant Matching", "No Manual Searching"]
+      },
+      "step3": {
+        "title": "03. Discover Opportunities.",
+        "desc": "Explore benefits curated exclusively for you.",
+        "bullets": ["Scholarships", "Government Schemes", "Startup Benefits"]
+      },
+      "step4": {
+        "title": "04. Apply With Confidence.",
+        "desc": "Everything you need before submitting your application.",
+        "bullets": ["Required Documents", "Application Guidelines", "Official Sources"]
+      },
+      "step5": {
+        "title": "05. Track Deadlines.",
+        "desc": "Stay informed and never miss an opportunity.",
+        "bullets": ["Deadline Tracking", "Opportunity Alerts", "Real-time Notifications"]
+      }
+    }
+  },
+  "features": {
+    "label": "Saarthi Capabilities",
+    "title": "Features",
+    "subtitle": "Everything you need in one place.",
+    "items": {
+      "matching": {
+        "label": "Profile Matching",
+        "title": "Personalized Matching",
+        "desc": "Discover opportunities tailored to your profile. Our system analyzes qualifications to match you with matching scholarships and welfare initiatives."
+      },
+      "guide": {
+        "label": "Filing Guidance",
+        "title": "Application Guide",
+        "desc": "Step-by-step guidance for every application. Navigate instructions, requirements, and filing deadlines without confusion."
+      },
+      "docs": {
+        "label": "Document Audit",
+        "title": "Required Documents",
+        "desc": "Know exactly what documents you need. Get dynamic checklists sorted by priority to prevent delays in approval."
+      },
+      "deadlines": {
+        "label": "Timeline Tracking",
+        "title": "Deadline Tracking",
+        "desc": "Never miss an important deadline. Monitor opening and closing dates for all matching government opportunities."
+      },
+      "notifications": {
+        "label": "Alert Updates",
+        "title": "Smart Notifications",
+        "desc": "Stay updated with new opportunities. Receive real-time alerts whenever a new program matches your criteria."
+      }
+    }
+  },
+  "whySaarthi": {
+    "label": "Saarthi Core",
+    "title": "Why Saarthi",
+    "subtitle": "Government opportunities, made simple.",
+    "items": {
+      "profile": {
+        "title": "01. One Profile.",
+        "desc": "Create your profile once and unlock personalized opportunities.",
+        "bullets": ["Age & State", "Education & Occupation", "Income & Category"]
+      },
+      "matching": {
+        "title": "02. Personalized Matching.",
+        "desc": "We recommend benefits based on your eligibility.",
+        "bullets": ["Personalized Eligibility Checks", "Instant Matching", "No Manual Searching"]
+      },
+      "oneplace": {
+        "title": "03. Everything in One Place.",
+        "desc": "Schemes, scholarships, startup benefits, and more.",
+        "bullets": ["Scholarships", "Government Schemes", "Startup Benefits"]
+      },
+      "deadlines": {
+        "title": "04. Never Miss Deadlines.",
+        "desc": "Stay updated with application dates and notifications.",
+        "bullets": ["Deadline Tracking", "Opportunity Alerts", "Real-time Notifications"]
+      },
+      "trusted": {
+        "title": "05. Trusted & Official.",
+        "desc": "We only provide official government opportunities.",
+        "bullets": ["Verified Schemes Only", "Direct Link to Applications", "No Fake or Spam Alerts"]
+      }
+    },
+    "visual": {
+      "state": "State",
+      "income": "Income",
+      "category": "Category",
+      "verified": "Verified",
+      "active": "Active",
+      "startups": "Startup Grants",
+      "scholarships": "Scholarships",
+      "schemes": "Govt Schemes",
+      "calendar": "Application Calendar",
+      "alert": "Alert:",
+      "left": "left",
+      "sources": "Official Sources"
+    }
+  },
+  "auth": {
+    "createAccount": "Create Account",
+    "welcomeBack": "Welcome Back",
+    "signupDesc": "Sign up to get started with Saarthi",
+    "signinDesc": "Sign in to continue to your account",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "show": "Show",
+    "hide": "Hide",
+    "google": "Continue with Google",
+    "or": "or continue with",
+    "alreadyHave": "Already have an account?",
+    "dontHave": "Don't have an account?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "enterName": "Enter your name",
+    "enterEmail": "Enter your email address",
+    "checkConfirmEmail": "Registration successful! Please check your email for a confirmation link.",
+    "fillAll": "Please fill in all fields.",
+    "invalidEmail": "Please enter a valid email address.",
+    "setupProfileFirst": "Please set up your profile details."
+  },
+  "profileSetup": {
+    "title": "Complete Your Profile",
+    "desc": "Please enter your profile details so we can match you with eligible government schemes, grants, and programs.",
+    "age": "Age",
+    "gender": "Gender",
+    "state": "State of Residence",
+    "education": "Current Education",
+    "income": "Annual Family Income",
+    "category": "Social Category",
+    "occupation": "Occupation",
+    "searchState": "Search state...",
+    "noStates": "No states found"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "desc": "Verify your eligibility, check matched schemes, and track your potential benefits in real-time.",
+    "settings": "Profile Settings",
+    "filters": "Matching Filters",
+    "interests": "Interests",
+    "findSchemes": "Find My Schemes",
+    "findingSchemes": "Finding Schemes...",
+    "funnel": "Eligibility Funnel",
+    "funnelTracking": "Welfare Funnel Tracking",
+    "realtimeStats": "Real-time stats",
+    "funnelBars": {
+      "initiated": "Initiated Matches",
+      "matched": "Profile Matched",
+      "recommended": "Recommended",
+      "applying": "Applying",
+      "verified": "Verified",
+      "initiatedTooltip": "Account setup complete",
+      "matchedTooltip": "Profile details verified",
+      "matchedPendingTooltip": "Profile setup pending",
+      "recsTooltip": "Matched {{count}} eligible schemes",
+      "recsPendingTooltip": "Awaiting eligibility checks",
+      "applyingTooltip": "{{count}} applications in progress",
+      "verifiedTooltip": "{{count}} applications submitted"
+    },
+    "projected": "Total Benefit Value",
+    "projectedDesc": "Projected Annual Savings",
+    "eligibleFor": "Eligible for {{count}} schemes",
+    "activeOpp": "Active Opportunities",
+    "totalOpen": "Total open postings",
+    "vsLast": "vs last period",
+    "newMatches": "+12% new matches",
+    "noMatches": "0 matches yet",
+    "deadlines": "Upcoming Deadlines",
+    "alerts": "Critical Alerts",
+    "deadlinesDesc": "Submit matching filters to calculate scheme deadlines.",
+    "noDeadlines": "No upcoming deadlines for currently matched schemes.",
+    "milestones": "Tracked Milestones",
+    "alertsCount": "{{count}} Alert(s)",
+    "overallComp": "Overall Compatibility",
+    "matchedOpportunities": "Matched Opportunities ({{count}})",
+    "autoFiltered": "Auto Filtered",
+    "n8nFetching": "Fetching live recommendations from n8n...",
+    "n8nWarning": "Recommendation engine warning: {{error}}. Displaying local cached schemes.",
+    "noOpps": "No matching opportunities found",
+    "noOppsDesc": "Try widening your eligibility settings (e.g., lower income, student/entrepreneur employment) to find matching welfare schemes.",
+    "lockedDesc": "Please fill in your profile parameters on the left and click Find My Schemes to instantly search and verify matching government sponsorships.",
+    "reqDocs": "Required Verification Documents",
+    "requiredDocs": "Required Docs",
+    "appActions": "Application Actions",
+    "eligibilityMet": "Eligibility Met",
+    "notConfirmed": "not confirmed yet",
+    "activeOpportunities": "Active Opportunities",
+    "totalPostings": "Total open postings",
+    "vsLastPeriod": "vs last period",
+    "newMatchesPercent": "+12% new matches",
+    "noMatchesYet": "0 matches yet",
+    "upcomingDeadlines": "Upcoming Deadlines",
+    "criticalAlerts": "Critical Alerts",
+    "submitFiltersDeadline": "Submit matching filters to calculate scheme deadlines.",
+    "noDeadlinesMatched": "No upcoming deadlines for currently matched schemes.",
+    "trackedMilestones": "Tracked Milestones",
+    "alertsLabel": "Alert(s)",
+    "noAlerts": "0 Alerts",
+    "eligibilityScore": "Eligibility Score",
+    "excellentMatch": "Excellent match profile. You qualify for high-priority government sponsorships.",
+    "submitSettingsScore": "Please submit your Profile Settings to calculate your eligibility score.",
+    "overallCompatibility": "Overall Compatibility",
+    "matchedOpportunitiesCount": "Matched Opportunities ({{count}})",
+    "schemesDesc": "Schemes and benefits matching your specific settings.",
+    "fetchingN8n": "Fetching live recommendations from n8n...",
+    "engineWarning": "Recommendation engine warning",
+    "deadlineLabel": "Deadline:",
+    "submitApp": "Submit Application",
+    "applyNow": "Apply Now (Start Application)",
+    "officialLink": "Official Link",
+    "noLinkAvailable": "No official link available.",
+    "visitWebsite": "Visit Website",
+    "whyYouMatch": "Why You Match",
+    "eligibleGovSchemes": "Eligible Government Schemes",
+    "noRecommendationsYet": "No Recommendations Yet"
+  },
+  "customerCare": {
+    "title": "Customer Care",
+    "desc": "Send us your suggestions, report issues, or query eligibility guidelines directly.",
+    "submit": "Submit Suggestions",
+    "descLeft": "Your feedback helps us refine Saarthi's opportunity matching algorithms. Share your experience or request benefits not currently listed.",
+    "ssl": "Secure SSL Encryption",
+    "welfareDesk": "Dedicated Welfare Desk Support",
+    "aiRouter": "AI Smart Ticket Router",
+    "directHotline": "Direct Hotline",
+    "submitted": "Suggestion Submitted!",
+    "submittedThanks": "Thank you for your valuable feedback, {{name}}. Our desk team has routed this ticket and will review it immediately."
+  },
+  "footer": {
+    "brandDesc": "Your trusted gateway to simplified government opportunities, scholarships, and citizen welfare schemes.",
+    "quickLinks": "Quick Links",
+    "customerCare": "Customer Service",
+    "stayConnected": "Stay Connected",
+    "newsletter": "Subscribe to our newsletter for exclusive opportunity matching alerts.",
+    "placeholder": "Your email address",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "toasts": {
+    "setupProfile": "Please set up your profile details.",
+    "errorLoadingSession": "Error loading session. Please try again.",
+    "openingDashboard": "Opening Government Dashboard...",
+    "completeProfileFirst": "Please complete your profile details first!",
+    "redirectingSignIn": "Redirecting to Sign In...",
+    "loggedOut": "Logged out successfully.",
+    "signInDashboard": "Please sign in first to access the Dashboard!",
+    "loadingDashboard": "Loading your Eligibility Dashboard...",
+    "loadingCustomerCare": "Loading Customer Care Support Desk...",
+    "profileCreated": "Profile created successfully!",
+    "profileSaveFailed": "Failed to save profile. Please try again.",
+    "profileUpdated": "Profile updated successfully!",
+    "profileUpdateFailed": "Failed to update profile. Please try again.",
+    "syncProgressFailed": "Failed to sync progress to database.",
+    "loadingSession": "Loading your profile session...",
+    "welcomeBackUser": "Welcome back, {{name}}!"
+  },
+  "documents": {
+    "aadhaar": "Aadhaar Card",
+    "income": "Income Certificate",
+    "caste": "Caste Certificate",
+    "domicile": "Domicile Certificate",
+    "educationProof": "Educational Certificate / Marksheet",
+    "admissionProof": "Admission / Bonafide Proof",
+    "bankPassbook": "Bank Passbook Details",
+    "passport": "Valid Passport",
+    "feeReceipt": "Fee Receipt",
+    "noDocsRequired": "No documents required."
+  },
+  "deadlines": {
+    "variesByBatch": "Varies by batch notification",
+    "awaitingAnnouncement": "Awaiting announcement",
+    "openThroughoutYear": "Open throughout the year",
+    "daysRemaining": "{{days}} days left",
+    "dayRemaining": "1 day left",
+    "noUrgent": "No urgent deadlines",
+    "urgent": "{{count}} URGENT",
+    "upcoming": "Upcoming",
+    "openBatch": "Open / Batch Based",
+    "awaiting": "Awaiting Announcement",
+    "noMatching": "No matching deadlines",
+    "refineSearch": "Try refining your search to locate specific deadlines.",
+    "noUpcoming": "No upcoming deadlines"
+  },
+  "chat": {
+    "typing": "Saarthi is typing...",
+    "error": "Unable to reach Saarthi AI. Please try again."
+  },
+  "schemes": {
+    "aictePragati": {
+      "title": "AICTE Pragati Scholarship Scheme for Female Students",
+      "benefitAmount": "₹50,000 per annum for course fee, books, and equipment",
+      "reason": "Exclusively designed for eligible female students pursuing technical or higher degree education with annual family income under ₹8 Lakhs."
+    },
+    "bartiFreeCoaching": {
+      "title": "BARTI Free Competitive Exam Coaching and Stipend Scheme",
+      "benefitAmount": "Free coaching for UPSC/MPSC exams plus monthly stipend up to ₹13,000",
+      "reason": "Babasaheb Ambedkar Research and Training Institute (BARTI) provides specialized free coaching and financial support to SC graduate candidates in Maharashtra preparing for competitive exams."
+    },
+    "ambedkarSwadhar": {
+      "title": "Dr. Babasaheb Ambedkar Swadhar Yojana (Maharashtra)",
+      "benefitAmount": "Up to ₹51,000 to ₹60,000 per year for accommodation, food, and living expenses",
+      "reason": "This scheme supports SC students in Maharashtra who are pursuing post-matric / post-graduate courses and could not secure hostel accommodation, provided family income is under ₹2.5 Lakhs."
+    },
+    "freeCoachingCentral": {
+      "title": "Free Coaching Scheme for SC and OBC Students (Central Sector)",
+      "benefitAmount": "100% course fee covered for competitive exam coaching + stipend of ₹4,000/month",
+      "reason": "Offered by the Ministry of Social Justice and Empowerment for graduate SC students preparing for UPSC, MPSC, SSC, or Banking examinations, with income under ₹8 Lakhs."
+    },
+    "postMatricMahaDBT": {
+      "title": "Government of India Post-Matric Scholarship for SC Students (MahaDBT)",
+      "benefitAmount": "Full tuition fee reimbursement and monthly maintenance allowance up to ₹1,200/month",
+      "reason": "You are an SC category graduate student from Maharashtra with an annual family income under ₹2,50,000, making you fully eligible for higher education tuition fee coverage and stipend."
+    },
+    "yuvaPrashikshan": {
+      "title": "Mukhyamantri Yuva Karya Prashikshan Yojana (Maharashtra)",
+      "benefitAmount": "Stipend of ₹10,000 per month during 6-month internship",
+      "reason": "As a 20-year-old graduate student in Maharashtra, you can get industry apprenticeship training and earn a monthly stipend to gain professional experience."
+    },
+    "nationalFellowshipST": {
+      "title": "National Fellowship for Higher Education of ST Students (NFST)",
+      "benefitAmount": "Financial fellowship of ₹31,000 to ₹35,000 per month plus HRA and contingency grants",
+      "reason": "Provides full financial support to meritorious ST graduate students pursuing higher research degrees (M.Phil / Ph.D.) in regular full-time courses."
+    },
+    "overseasScholarshipST": {
+      "title": "National Overseas Scholarship for ST Students",
+      "benefitAmount": "Full tuition fee, annual maintenance allowance of approx. USD 15,400, airfare, and visa fees",
+      "reason": "Designed for ST graduate students under 35 years of age with family income under ₹6.0 Lakhs aiming to pursue Master's or Ph.D. programs abroad."
+    },
+    "pmUspCentral": {
+      "title": "PM-USP Central Sector Scheme of Scholarship for College and University Students",
+      "benefitAmount": "₹12,000 per annum at Graduation level and ₹20,000 per annum at Post-Graduation level",
+      "reason": "Supports meritorious students from low-income families (income below ₹4.5 Lakhs) undertaking full-time college or university education."
+    },
+    "postMatricArunachal": {
+      "title": "Post Matric Scholarship for ST Students (Arunachal Pradesh)",
+      "benefitAmount": "Complete tuition fee waiver plus monthly maintenance allowance up to ₹1,200",
+      "reason": "Tailored for Scheduled Tribe (ST) students from Arunachal Pradesh pursuing post-matriculation or post-graduate higher education with family annual income under ₹2.5 Lakhs."
+    }
+  }
+}

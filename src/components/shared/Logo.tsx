@@ -1,6 +1,7 @@
 import React from 'react';
-import logoImg from '../logo.png';
-import { cn } from '../lib/utils';
+import logoImg from '../../assets/logo.png';
+import { cn } from '../../utils/cn';
+import { useTranslation } from 'react-i18next';
 
 interface LogoProps {
   className?: string;
@@ -13,6 +14,7 @@ export const Logo: React.FC<LogoProps> = ({
   showTagline = false,
   theme = 'light'
 }) => {
+  const { t } = useTranslation();
   const isDarkTheme = theme === 'dark';
 
   return (
@@ -47,7 +49,7 @@ export const Logo: React.FC<LogoProps> = ({
             "text-[10.5px] font-medium tracking-wider uppercase mt-1",
             isDarkTheme ? "text-slate-400" : "text-slate-500"
           )}>
-            Government Benefits. Made Simple.
+            {t('common.tagline') || 'Government Benefits. Made Simple.'}
           </span>
         )}
       </div>

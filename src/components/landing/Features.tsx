@@ -1,47 +1,50 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface FeatureItem {
   id: string;
-  title: string;
-  description: string;
-  label: string;
+  titleKey: string;
+  descKey: string;
+  labelKey: string;
 }
 
-const FEATURES: FeatureItem[] = [
-  {
-    id: '01',
-    title: 'Personalized Matching',
-    description: 'Discover opportunities tailored to your profile. Our system analyzes qualifications to match you with matching scholarships and welfare initiatives.',
-    label: 'Profile Matching',
-  },
-  {
-    id: '02',
-    title: 'Application Guide',
-    description: 'Step-by-step guidance for every application. Navigate instructions, requirements, and filing deadlines without confusion.',
-    label: 'Filing Guidance',
-  },
-  {
-    id: '03',
-    title: 'Required Documents',
-    description: 'Know exactly what documents you need. Get dynamic checklists sorted by priority to prevent delays in approval.',
-    label: 'Document Audit',
-  },
-  {
-    id: '04',
-    title: 'Deadline Tracking',
-    description: 'Never miss an important deadline. Monitor opening and closing dates for all matching government opportunities.',
-    label: 'Timeline Tracking',
-  },
-  {
-    id: '05',
-    title: 'Smart Notifications',
-    description: 'Stay updated with new opportunities. Receive real-time alerts whenever a new program matches your criteria.',
-    label: 'Alert Updates',
-  },
-];
-
 export const Features: React.FC = () => {
+  const { t } = useTranslation();
+
+  const features: FeatureItem[] = [
+    {
+      id: '01',
+      titleKey: 'features.items.matching.title',
+      descKey: 'features.items.matching.desc',
+      labelKey: 'features.items.matching.label',
+    },
+    {
+      id: '02',
+      titleKey: 'features.items.guide.title',
+      descKey: 'features.items.guide.desc',
+      labelKey: 'features.items.guide.label',
+    },
+    {
+      id: '03',
+      titleKey: 'features.items.docs.title',
+      descKey: 'features.items.docs.desc',
+      labelKey: 'features.items.docs.label',
+    },
+    {
+      id: '04',
+      titleKey: 'features.items.deadlines.title',
+      descKey: 'features.items.deadlines.desc',
+      labelKey: 'features.items.deadlines.label',
+    },
+    {
+      id: '05',
+      titleKey: 'features.items.notifications.title',
+      descKey: 'features.items.notifications.desc',
+      labelKey: 'features.items.notifications.label',
+    },
+  ];
+
   // Stagger variants for the vertical elements
   const containerVariants = {
     hidden: {},
@@ -72,13 +75,13 @@ export const Features: React.FC = () => {
       {/* SECTION HEADER */}
       <div className="max-w-4xl mx-auto text-center px-6 mb-16 sm:mb-20 flex flex-col items-center gap-2.5 relative z-10">
         <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] text-[#2563EB] uppercase">
-          Saarthi Capabilities
+          {t('features.label')}
         </span>
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0F172A] tracking-tight leading-[1.1]">
-          Features<span className="text-[#2563EB] drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]">.</span>
+          {t('features.title')}<span className="text-[#2563EB] drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]">.</span>
         </h2>
         <p className="text-base sm:text-lg text-slate-500 font-normal leading-relaxed mt-1 max-w-md">
-          Everything you need in one place.
+          {t('features.subtitle')}
         </p>
       </div>
 
@@ -94,7 +97,7 @@ export const Features: React.FC = () => {
           viewport={{ once: true, margin: "-10% 0px" }}
           className="flex flex-col w-full"
         >
-          {FEATURES.map((feature, index) => (
+          {features.map((feature, index) => (
             <motion.div
               key={feature.id}
               variants={itemVariants}
@@ -109,22 +112,22 @@ export const Features: React.FC = () => {
               <div className="group-hover:translate-x-1.5 transition-transform duration-300 flex flex-col items-start w-full">
                 {/* Sub-label showing feature code */}
                 <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-slate-400 mb-2">
-                  0{index + 1} &mdash; {feature.label}
+                  0{index + 1} &mdash; {t(feature.labelKey)}
                 </span>
 
                 {/* Feature Title */}
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                  {feature.title}
+                  {t(feature.titleKey)}
                 </h3>
 
                 {/* Feature Description */}
                 <p className="text-base sm:text-[18px] text-slate-500 font-normal leading-relaxed mt-3 max-w-xl">
-                  {feature.description}
+                  {t(feature.descKey)}
                 </p>
               </div>
 
-              {/* Elegant low-contrast separator between rows (except last item) */}
-              {index !== FEATURES.length - 1 && (
+              {/* Elegant separator between rows (except last item) */}
+              {index !== features.length - 1 && (
                 <div className="w-full h-[1px] bg-slate-100/80 mt-10 sm:mt-12 pointer-events-none" />
               )}
             </motion.div>

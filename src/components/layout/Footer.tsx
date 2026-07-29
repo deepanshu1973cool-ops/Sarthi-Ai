@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Logo } from './Logo';
+import { Logo } from '../shared/Logo';
 import { 
   Facebook, 
   Instagram, 
@@ -8,12 +8,14 @@ import {
   Mail, 
   Send 
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export interface FooterProps {
   onTabChange?: (tabId: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -37,7 +39,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
             element.scrollIntoView({ behavior: 'smooth' });
           }
         }
-      }, 100);
+      }, 180);
     }
   };
 
@@ -52,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
           <div className="flex flex-col gap-6 items-start">
             <Logo showTagline={false} theme="dark" />
             <p className="text-sm text-slate-400 font-normal leading-relaxed max-w-[240px]">
-              Your trusted gateway to simplified government opportunities, scholarships, and citizen welfare schemes.
+              {t('footer.brandDesc')}
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-5 mt-2">
@@ -74,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
           {/* Column 2: Quick Links */}
           <div className="flex flex-col gap-6">
             <h4 className="font-bold text-white tracking-tight text-base">
-              Quick Links
+              {t('footer.quickLinks')}
             </h4>
             <ul className="flex flex-col gap-3.5">
               <li>
@@ -83,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('explore', '#explore', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Opportunities
+                  {t('opportunities.title')}
                 </a>
               </li>
               <li>
@@ -92,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('how-it-works', '#how-it-works', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  How It Works
+                  {t('howItWorks.title')}
                 </a>
               </li>
               <li>
@@ -101,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('explore', '#features', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Capabilities
+                  {t('features.title')}
                 </a>
               </li>
               <li>
@@ -110,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('explore', '#why-saarthi', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Ecosystem Highlights
+                  {t('whySaarthi.title')}
                 </a>
               </li>
             </ul>
@@ -119,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
           {/* Column 3: Customer Service */}
           <div className="flex flex-col gap-6">
             <h4 className="font-bold text-white tracking-tight text-base">
-              Customer Service
+              {t('footer.customerCare')}
             </h4>
             <ul className="flex flex-col gap-3.5">
               <li>
@@ -128,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('customer-care', '#customer-care', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Contact Us & Suggestions
+                  {t('customerCare.title')}
                 </a>
               </li>
               <li>
@@ -137,7 +139,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
                   onClick={(e) => handleLinkClick('customer-care', '#customer-care', e)}
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  FAQs & Support
+                  FAQs &amp; Support
                 </a>
               </li>
               <li>
@@ -155,10 +157,10 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
           {/* Column 4: Stay Connected & Newsletter */}
           <div className="flex flex-col gap-6">
             <h4 className="font-bold text-white tracking-tight text-base">
-              Stay Connected
+              {t('footer.stayConnected')}
             </h4>
             <p className="text-sm text-slate-400 font-normal leading-relaxed">
-              Subscribe to our newsletter for exclusive opportunity matching alerts.
+              {t('footer.newsletter')}
             </p>
             
             {/* Email form */}
@@ -166,7 +168,7 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
               <input
                 type="email"
                 required
-                placeholder="Your email address"
+                placeholder={t('footer.placeholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 bg-slate-900/60 border border-slate-800 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 placeholder:text-slate-500"
@@ -191,18 +193,18 @@ export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
 
         </div>
 
-        {/* BOTTOM CENTER BLOCK: Copyrights & Sub-links */}
+        {/* BOTTOM CENTER BLOCK */}
         <div className="flex flex-col items-center justify-center gap-3 border-t border-slate-900 pt-8 text-center">
           <p className="text-xs text-slate-500 font-normal">
             &copy; {new Date().getFullYear()} Saarthi AI. All rights reserved.
           </p>
           <div className="flex items-center gap-2.5 text-xs text-slate-500">
             <a href="#" className="hover:text-slate-350 transition-colors duration-250">
-              Privacy Policy
+              {t('footer.privacy')}
             </a>
             <span>|</span>
             <a href="#" className="hover:text-slate-350 transition-colors duration-250">
-              Terms of Service
+              {t('footer.terms')}
             </a>
           </div>
         </div>

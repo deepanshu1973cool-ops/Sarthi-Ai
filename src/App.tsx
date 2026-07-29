@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { OpportunitiesShowcase } from './components/OpportunitiesShowcase';
-import { HowItWorks } from './components/HowItWorks';
-import { WhySaarthi } from './components/WhySaarthi';
-import { Features } from './components/Features';
-import { Dashboard } from './components/Dashboard';
-import { CustomerCare } from './components/CustomerCare';
-import { Footer } from './components/Footer';
-import { Auth, AuthUser } from './components/Auth';
-import { Check } from 'lucide-react';
+import { Navbar } from './components/layout/Navbar';
+import { Hero } from './components/landing/Hero';
+import { OpportunitiesShowcase } from './components/landing/OpportunitiesShowcase';
+import { HowItWorks } from './components/landing/HowItWorks';
+import { WhySaarthi } from './components/landing/WhySaarthi';
+import { Features } from './components/landing/Features';
+import { Dashboard } from './pages/Dashboard';
+import { CustomerCare } from './pages/CustomerCare';
+import { Footer } from './components/layout/Footer';
+import { Auth } from './pages/Auth';
+import { ProfileSetup } from './pages/ProfileSetup';
+import { FloatingChatButton } from './components/chat/FloatingChatButton';
+import { ChatWindow } from './components/chat/ChatWindow';
+import { Check, Loader2 } from 'lucide-react';
+import { supabase } from './services/supabaseClient';
+import { fetchProfile, insertProfile, updateProfile, UserProfile } from './services/profileService';
+import { fetchProgress, createProgress, updateProgress, UserProgress, mapDBToProgress, DBProgress } from './services/progressService';
+import { useTranslation } from 'react-i18next';
 
 export default function App() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<string>('explore');
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const landingRef = useRef<HTMLDivElement>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -24,85 +37,220 @@ export default function App() {
     }, 2500);
   };
 
-  const handleCtaClick = () => {
-    if (user) {
-      setActiveTab('dashboard');
-      showToast("Opening Government Dashboard...");
-    } else {
-      setActiveTab('auth');
-      showToast("Redirecting to Sign In...");
+  // Check session and load user profile
+  useEffect(() => {
+    let isMounted = true;
+
+    // Fetch initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted) return;
+      if (session) {
+        setUser(session.user);
+        loadProfileForUser(session.user.id);
+      } else {
+        setUser(null);
+        setProfile(null);
+        setProgress(null);
+        setIsLoadingProfile(false);
+      }
+    });
+
+    // Listen to Auth State Changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMounted) return;
+      console.log("Auth State Event:", event);
+      if (session) {
+        setUser(session.user);
+        if (event === 'SIGNED_IN') {
+          await loadProfileForUser(session.user.id);
+        }
+      } else {
+        setUser(null);
+        setProfile(null);
+        setProgress(null);
+        setActiveTab('explore');
+        setIsLoadingProfile(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const loadProfileForUser = async (userId: string) => {
+    try {
+      setIsLoadingProfile(true);
+      const userProfile = await fetchProfile(userId);
+      setProfile(userProfile);
+      
+      if (userProfile) {
+        // Load or create progress record since profile exists
+        let userProgress = await fetchProgress(userId);
+        if (!userProgress) {
+          userProgress = await createProgress(userId);
+        }
+        setProgress(userProgress);
+        
+        // If user already has profile and is on auth screen, go to dashboard
+        setActiveTab((prev) => (prev === 'auth' || prev === 'profile-setup' ? 'dashboard' : prev));
+      } else {
+        // Set local default progress for first-time signups
+        setProgress({
+          id: userId,
+          userId: userId,
+          profileCompleted: false,
+          eligibilityChecked: false,
+          recommendationsGenerated: 0,
+          applicationsStarted: 0,
+          applicationsSubmitted: 0
+        });
+        setActiveTab('profile-setup');
+        showToast(t('toasts.setupProfile'));
+      }
+    } catch (error) {
+      console.error("Error loading user profile or progress:", error);
+      showToast(t('toasts.errorLoadingSession'));
+    } finally {
+      setIsLoadingProfile(false);
     }
   };
 
-  const handleLogout = () => {
+  // Subscribe to real-time changes on user_progress table for this user
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const channel = supabase
+      .channel(`user-progress-realtime-${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_progress',
+          filter: `user_id=eq.${user.id}`
+        },
+        (payload: any) => {
+          console.log("Real-time progress update payload:", payload);
+          if (payload.eventType === 'DELETE') {
+            setProgress(null);
+          } else if (payload.new && Object.keys(payload.new).length > 0) {
+            setProgress(mapDBToProgress(payload.new as DBProgress));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id]);
+
+  const handleCtaClick = () => {
+    if (user) {
+      if (profile) {
+        setActiveTab('dashboard');
+        showToast(t('toasts.openingDashboard'));
+      } else {
+        setActiveTab('profile-setup');
+        showToast(t('toasts.completeProfileFirst'));
+      }
+    } else {
+      setActiveTab('auth');
+      showToast(t('toasts.redirectingSignIn'));
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
+    setProfile(null);
+    setProgress(null);
     setActiveTab('explore');
-    showToast("Logged out successfully.");
+    showToast(t('toasts.loggedOut'));
   };
 
   const handleTabChange = (tabId: string) => {
-    // Temporary Bypass: Suspended authorization guard for direct testing
-    /*
-    if (tabId === 'dashboard' && !user) {
-      alert("Access Denied: Please sign in first to access the Dashboard!");
-      setActiveTab('auth');
-      showToast("Please sign in first to access the Dashboard!");
-      return;
+    // Guards
+    if (tabId === 'dashboard') {
+      if (!user) {
+        setActiveTab('auth');
+        window.scrollTo({ top: 0 });
+        showToast(t('toasts.signInDashboard'));
+        return;
+      }
+      if (!profile) {
+        setActiveTab('profile-setup');
+        window.scrollTo({ top: 0 });
+        showToast(t('toasts.completeProfileFirst'));
+        return;
+      }
     }
-    */
     
+    // Scroll instantly to top for page transitions, except when scrolling to landing sections
+    if (tabId !== 'how-it-works') {
+      window.scrollTo({ top: 0 });
+    }
+
     setActiveTab(tabId);
     if (tabId === 'dashboard') {
-      showToast("Loading your Eligibility Dashboard...");
+      showToast(t('toasts.loadingDashboard'));
     } else if (tabId === 'customer-care') {
-      showToast("Loading Customer Care Support Desk...");
+      showToast(t('toasts.loadingCustomerCare'));
     } else if (tabId === 'auth') {
-      showToast("Redirecting to Sign In...");
-    } else {
-      showToast(`Navigated to '${tabId}'`);
+      showToast(t('toasts.redirectingSignIn'));
     }
   };
 
-  // Backend synchronisation handler (ready for integration with user database API)
-  const handleProfileSubmitToBackend = async (profileData: {
-    fullName: string;
-    age: number;
-    state: string;
-    gender: string;
-    education: string;
-    income: number;
-    category: string;
-    employment: string;
-    interests: string[];
-  }) => {
-    showToast("Syncing profile data to database...");
-    console.log("✈️ SENDING PROFILE DATA TO BACKEND:", profileData);
-    
-    /*
-    // Example backend API integration code:
+  // Profile setup submission
+  const handleProfileSetupSubmit = async (profileData: UserProfile) => {
+    if (!user) return;
     try {
-      const response = await fetch('http://localhost:5000/api/profile/sync', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Include authorization headers if user is logged in
-          // 'Authorization': `Bearer ${user?.token || ''}`
-        },
-        body: JSON.stringify(profileData)
-      });
+      const newProfile = await insertProfile(user.id, profileData);
+      setProfile(newProfile);
       
-      if (!response.ok) {
-        throw new Error("Failed to synchronize profile settings");
-      }
-      
-      const responseData = await response.json();
-      console.log("Backend sync response:", responseData);
-      showToast("Profile synchronized with server!");
+      const newProgress = await updateProgress(user.id, { profileCompleted: true });
+      setProgress(newProgress);
+
+      setActiveTab('dashboard');
+      showToast(t('toasts.profileCreated'));
     } catch (error) {
-      console.error("Backend synchronization error:", error);
-      showToast("Warning: Failed to sync profile with database.");
+      console.error("Error creating profile:", error);
+      showToast(t('toasts.profileSaveFailed'));
+      throw error;
     }
-    */
+  };
+
+  // Dashboard profile update submission
+  const handleDashboardProfileUpdate = async (profileData: UserProfile) => {
+    if (!user) return;
+    try {
+      const updated = await updateProfile(user.id, profileData);
+      setProfile(updated);
+
+      const newProgress = await updateProgress(user.id, { profileCompleted: true });
+      setProgress(newProgress);
+
+      showToast(t('toasts.profileUpdated'));
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      showToast(t('toasts.profileUpdateFailed'));
+      throw error;
+    }
+  };
+
+  // Handler for progress updates
+  const handleProgressUpdate = async (updates: Partial<UserProgress>) => {
+    if (!user) return;
+    try {
+      const updated = await updateProgress(user.id, updates);
+      setProgress(updated);
+    } catch (error) {
+      console.error("Error updating user progress:", error);
+      showToast(t('toasts.syncProgressFailed'));
+      throw error;
+    }
   };
 
   // Reset scroll, configure manual scroll restoration, and route to Explore / Hero section on reload
@@ -116,31 +264,44 @@ export default function App() {
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-    setActiveTab('explore');
   }, []);
 
-  // Smooth Scroll Trigger on Tab Change (handles delayed mounts due to AnimatePresence exit transitions)
+  // Smooth Scroll Trigger to landing anchors based on activeTab and wrapper DOM mount
   useEffect(() => {
-    if (activeTab === 'how-it-works') {
+    if (activeTab === 'how-it-works' && landingRef.current) {
       const element = document.querySelector('#how-it-works');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        // If element is not in DOM (e.g. transitioning from dashboard/auth), wait for mount animation to complete
-        const timer = setTimeout(() => {
-          const el = document.querySelector('#how-it-works');
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 260); // 240ms exit duration + 20ms render frame buffer
-        return () => clearTimeout(timer);
       }
-    } else if (activeTab === 'explore') {
+    }
+  }, [activeTab, landingRef.current]);
+
+  // Handle immediate page scroll changes
+  useEffect(() => {
+    if (activeTab === 'explore') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (activeTab === 'dashboard' || activeTab === 'customer-care' || activeTab === 'auth') {
+    } else if (activeTab === 'dashboard' || activeTab === 'customer-care' || activeTab === 'auth' || activeTab === 'profile-setup') {
       window.scrollTo({ top: 0 });
     }
   }, [activeTab]);
+
+  if (isLoadingProfile) {
+    return (
+      <div className="min-h-screen bg-[#FAFBFC] flex items-center justify-center font-sans">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+          <span className="text-xs font-semibold text-slate-400">{t('toasts.loadingSession') || 'Loading your profile session...'}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Map supabase user object to navbar format
+  const navbarUser = user ? {
+    name: profile?.fullName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+    email: user.email || '',
+    picture: user.user_metadata?.avatar_url
+  } : null;
 
   return (
     <div className="min-h-screen bg-[#FAFBFC] text-[#0F172A] font-sans selection:bg-blue-500/20 selection:text-blue-600 relative overflow-x-hidden">
@@ -148,9 +309,9 @@ export default function App() {
       <Navbar
         activeTab={activeTab}
         onTabChange={handleTabChange}
-        ctaText={user ? "Dashboard" : "Login"}
+        ctaText={navbarUser ? t('navbar.dashboard') : t('navbar.login')}
         onCtaClick={handleCtaClick}
-        user={user}
+        user={navbarUser}
         onLogout={handleLogout}
       />
 
@@ -159,27 +320,44 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
             className="w-full"
           >
-            {activeTab === 'dashboard' ? (
-              <Dashboard onProfileSubmit={handleProfileSubmitToBackend} />
+            {activeTab === 'dashboard' && profile && user ? (
+              <Dashboard 
+                userId={user.id}
+                profile={profile} 
+                onProfileUpdate={handleDashboardProfileUpdate} 
+                progress={progress}
+                onProgressUpdate={handleProgressUpdate}
+              />
+            ) : activeTab === 'profile-setup' && user ? (
+              <ProfileSetup 
+                initialEmail={user.email || ''} 
+                initialName={user.user_metadata?.full_name || ''} 
+                onSubmit={handleProfileSetupSubmit}
+                onCancel={handleLogout}
+              />
             ) : activeTab === 'customer-care' ? (
               <CustomerCare />
             ) : activeTab === 'auth' ? (
               <Auth 
                 onLoginSuccess={(userData) => {
-                  setUser(userData);
-                  setActiveTab('dashboard');
-                  showToast(`Welcome back, ${userData.name}!`);
+                  showToast(t('toasts.welcomeBackUser', { name: userData.name }));
+                  supabase.auth.getSession().then(({ data: { session } }) => {
+                    if (session) {
+                      setUser(session.user);
+                      loadProfileForUser(session.user.id);
+                    }
+                  });
                 }}
                 onBackToExplore={() => setActiveTab('explore')}
               />
             ) : (
-              <div className="w-full flex flex-col">
+              <div ref={landingRef} className="w-full flex flex-col">
                 <Hero onCtaClick={handleCtaClick} />
                 <OpportunitiesShowcase />
                 <HowItWorks />
@@ -201,6 +379,10 @@ export default function App() {
           <span>{toastMessage}</span>
         </div>
       )}
+
+      {/* Floating Chatbot Assistant */}
+      <FloatingChatButton isOpen={isChatOpen} onClick={() => setIsChatOpen(!isChatOpen)} />
+      <ChatWindow isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 }

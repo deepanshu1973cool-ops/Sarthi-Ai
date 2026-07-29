@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Roboto+Slab:wght@400;500;600;700;800&family=Bitter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-serif-display {
+  font-family: 'Roboto Slab', 'Bitter', Georgia, serif;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #FFFFFF;
+  color: #0F172A;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom soft glassmorphism shadows and blurs */
+.shadow-soft-glass {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dark .shadow-soft-glass {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Custom scrollbar styling for clean mobile drawer */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.4);
+}
+
+/* Custom range slider track and thumb styling */
+.custom-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome, Safari, Opera, Edge */
+.custom-range-slider::-webkit-slider-runnable-track {
+  background: transparent !important;
+  height: 6px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.custom-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px !important;
+  width: 16px !important;
+  border-radius: 9999px !important;
+  background: #2563EB !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35) !important;
+  margin-top: -5px !important; /* Centers 16px thumb on 6px track */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  transition: transform 0.1s ease;
+}
+
+.custom-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.custom-range-slider::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+
+/* Firefox */
+.custom-range-slider::-moz-range-track {
+  background: transparent !important;
+  height: 6px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.custom-range-slider::-moz-range-thumb {
+  border: 2px solid #FFFFFF !important;
+  height: 16px !important;
+  width: 16px !important;
+  border-radius: 9999px !important;
+  background: #2563EB !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35) !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: transform 0.1s ease;
+}
+
+.custom-range-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.custom-range-slider::-moz-range-thumb:active {
+  transform: scale(0.95);
+}
+
+/* Remove default increment/decrement up/down arrows from number inputs globally */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Global scroll lock styles to block background scrolling on all elements */
+html.scroll-locked,
+body.scroll-locked,
+html.scroll-locked body,
+html.scroll-locked #root,
+html.scroll-locked main {
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+}
+
+/* Hide navigation bar header when upcoming deadlines modal is open */
+html.deadlines-open header {
+  display: none !important;
+}
+
+/* Hide scrollbar visually from every page and every scrollable section globally */
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Opera */
+}

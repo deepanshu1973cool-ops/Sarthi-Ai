@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hero as AnimatedHero } from './ui/animated-hero';
+import { Hero as AnimatedHero } from '../ui/animated-hero';
 
 export interface HeroProps {
   onCtaClick?: () => void;

@@ -1,50 +1,20 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../utils/cn';
+import { useTranslation } from 'react-i18next';
 
-interface AccordionItem {
+interface ItemType {
   id: string;
-  title: string;
-  description: string;
-  bullets: string[];
+  titleKey: string;
+  descKey: string;
+  bulletsKey: string;
 }
-
-const ITEMS: AccordionItem[] = [
-  {
-    id: '01',
-    title: '01. One Profile.',
-    description: 'Create your profile once and unlock personalized opportunities.',
-    bullets: ['Age & State', 'Education & Occupation', 'Income & Category']
-  },
-  {
-    id: '02',
-    title: '02. Personalized Matching.',
-    description: 'We recommend benefits based on your eligibility.',
-    bullets: ['Personalized Eligibility Checks', 'Instant Matching', 'No Manual Searching']
-  },
-  {
-    id: '03',
-    title: '03. Everything in One Place.',
-    description: 'Schemes, scholarships, startup benefits, and more.',
-    bullets: ['Scholarships', 'Government Schemes', 'Startup Benefits']
-  },
-  {
-    id: '04',
-    title: '04. Never Miss Deadlines.',
-    description: 'Stay updated with application dates and notifications.',
-    bullets: ['Deadline Tracking', 'Opportunity Alerts', 'Real-time Notifications']
-  },
-  {
-    id: '05',
-    title: '05. Trusted & Official.',
-    description: 'We only provide official government opportunities.',
-    bullets: ['Verified Schemes Only', 'Direct Link to Applications', 'No Fake or Spam Alerts']
-  }
-];
 
 // ILLUSTRATIONS RENDERER FOR THE RIGHT SIDE
 const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full h-full flex items-center justify-center p-8">
       <AnimatePresence mode="wait">
@@ -71,15 +41,15 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
             {/* Profile fields mock */}
             <div className="flex flex-col gap-2.5 mt-4">
               <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                <span className="text-xs text-slate-400 font-medium">State</span>
+                <span className="text-xs text-slate-400 font-medium">{t('whySaarthi.visual.state')}</span>
                 <span className="text-xs text-slate-800 font-semibold bg-slate-100 px-2 py-0.5 rounded">Delhi</span>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                <span className="text-xs text-slate-400 font-medium">Income</span>
+                <span className="text-xs text-slate-400 font-medium">{t('whySaarthi.visual.income')}</span>
                 <span className="text-xs text-slate-800 font-semibold bg-slate-100 px-2 py-0.5 rounded">&lt; 2.5 LPA</span>
               </div>
               <div className="flex justify-between items-center py-1.5">
-                <span className="text-xs text-slate-400 font-medium">Category</span>
+                <span className="text-xs text-slate-400 font-medium">{t('whySaarthi.visual.category')}</span>
                 <span className="text-xs text-slate-800 font-semibold bg-slate-100 px-2 py-0.5 rounded">OBC</span>
               </div>
             </div>
@@ -93,7 +63,7 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              Verified
+              {t('whySaarthi.visual.verified')}
             </motion.div>
           </motion.div>
         )}
@@ -107,7 +77,7 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="w-full max-w-[280px] flex items-center justify-center relative"
           >
-            {/* Elegant connection circles representing matching */}
+            {/* Connection circles representing matching */}
             <svg className="w-48 h-48" viewBox="0 0 200 200" fill="none">
               <circle cx="100" cy="100" r="80" stroke="#F1F5F9" strokeWidth="2" strokeDasharray="4 4" />
               <circle cx="100" cy="100" r="50" stroke="#E2E8F0" strokeWidth="1.5" />
@@ -155,9 +125,9 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
               >
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded bg-amber-500" />
-                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">Startup Grants</span>
+                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">{t('whySaarthi.visual.startups')}</span>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">12 Active</span>
+                <span className="text-[10px] font-mono text-slate-400">12 {t('whySaarthi.visual.active')}</span>
               </motion.div>
 
               {/* Layer 2 */}
@@ -168,9 +138,9 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
               >
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded bg-blue-500" />
-                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">Scholarships</span>
+                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">{t('whySaarthi.visual.scholarships')}</span>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">45 Active</span>
+                <span className="text-[10px] font-mono text-slate-400">45 {t('whySaarthi.visual.active')}</span>
               </motion.div>
 
               {/* Layer 1 */}
@@ -179,9 +149,9 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
               >
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded bg-emerald-500" />
-                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">Govt Schemes</span>
+                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">{t('whySaarthi.visual.schemes')}</span>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">120 Active</span>
+                <span className="text-[10px] font-mono text-slate-400">120 {t('whySaarthi.visual.active')}</span>
               </motion.div>
             </div>
           </motion.div>
@@ -198,11 +168,11 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
           >
             {/* Calendar Grid Header */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span className="text-xs font-bold text-slate-800">Application Calendar</span>
+              <span className="text-xs font-bold text-slate-800">{t('whySaarthi.visual.calendar')}</span>
               <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
             </div>
 
-            {/* Abstract Calendar Blocks */}
+            {/* Calendar Blocks */}
             <div className="grid grid-cols-7 gap-2.5 my-3">
               {Array.from({ length: 14 }).map((_, idx) => (
                 <div 
@@ -222,10 +192,10 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
             {/* Notification alert banner */}
             <div className="bg-blue-50/50 border border-blue-100/50 rounded-lg p-2 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-blue-600 font-bold">Alert:</span>
+                <span className="text-xs text-blue-600 font-bold">{t('whySaarthi.visual.alert')}</span>
                 <span className="text-[10px] text-slate-500 truncate w-32">PM Scholarship closes tomorrow</span>
               </div>
-              <span className="text-[9px] font-mono font-bold text-red-500">1d left</span>
+              <span className="text-[9px] font-mono font-bold text-red-500">1d {t('whySaarthi.visual.left')}</span>
             </div>
           </motion.div>
         )}
@@ -241,7 +211,7 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
           >
             {/* Verified badge shield illustration */}
             <div className="relative flex items-center justify-center">
-              {/* Outer glowing ring */}
+              {/* Outer ring */}
               <motion.div
                 animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.15, 0.3] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
@@ -262,7 +232,7 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
 
               {/* Tiny tags floated */}
               <div className="absolute -bottom-2 -left-6 bg-white border border-slate-100 shadow-md text-[9px] font-bold text-slate-800 px-2.5 py-1 rounded-full uppercase tracking-wider z-20">
-                Official Sources
+                {t('whySaarthi.visual.sources')}
               </div>
             </div>
           </motion.div>
@@ -273,7 +243,41 @@ const VisualShowcase: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
 };
 
 export const WhySaarthi: React.FC = () => {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const items: ItemType[] = [
+    {
+      id: '01',
+      titleKey: 'whySaarthi.items.profile.title',
+      descKey: 'whySaarthi.items.profile.desc',
+      bulletsKey: 'whySaarthi.items.profile.bullets'
+    },
+    {
+      id: '02',
+      titleKey: 'whySaarthi.items.matching.title',
+      descKey: 'whySaarthi.items.matching.desc',
+      bulletsKey: 'whySaarthi.items.matching.bullets'
+    },
+    {
+      id: '03',
+      titleKey: 'whySaarthi.items.oneplace.title',
+      descKey: 'whySaarthi.items.oneplace.desc',
+      bulletsKey: 'whySaarthi.items.oneplace.bullets'
+    },
+    {
+      id: '04',
+      titleKey: 'whySaarthi.items.deadlines.title',
+      descKey: 'whySaarthi.items.deadlines.desc',
+      bulletsKey: 'whySaarthi.items.deadlines.bullets'
+    },
+    {
+      id: '05',
+      titleKey: 'whySaarthi.items.trusted.title',
+      descKey: 'whySaarthi.items.trusted.desc',
+      bulletsKey: 'whySaarthi.items.trusted.bullets'
+    }
+  ];
 
   return (
     <section id="why-saarthi" className="w-full bg-white text-[#0F172A] py-16 sm:py-24 relative overflow-hidden font-sans border-t border-slate-100/50">
@@ -281,23 +285,24 @@ export const WhySaarthi: React.FC = () => {
       {/* SECTION HEADER */}
       <div className="max-w-4xl mx-auto text-center px-6 mb-16 sm:mb-20 flex flex-col items-center gap-2.5">
         <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] text-[#2563EB] uppercase">
-          Saarthi Core
+          {t('whySaarthi.label')}
         </span>
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0F172A] tracking-tight leading-[1.1]">
-          Why Saarthi<span className="text-[#2563EB] drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]">?</span>
+          {t('whySaarthi.title')}<span className="text-[#2563EB] drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]">?</span>
         </h2>
         <p className="text-base sm:text-lg text-slate-500 font-normal leading-relaxed mt-1 max-w-md">
-          Government opportunities, made simple.
+          {t('whySaarthi.subtitle')}
         </p>
       </div>
 
       {/* TWO-COLUMN ACCORDION SHOWCASE CONTAINER */}
       <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start relative">
         
-        {/* LEFT COLUMN: ACCORDION SELECTORS (3/5 width on desktop) */}
+        {/* LEFT COLUMN: ACCORDION SELECTORS */}
         <div className="lg:col-span-3 flex flex-col border-t border-slate-200/80">
-          {ITEMS.map((item, index) => {
+          {items.map((item, index) => {
             const isActive = activeIndex === index;
+            const bullets = t(item.bulletsKey, { returnObjects: true }) as string[] || [];
 
             return (
               <div 
@@ -313,7 +318,7 @@ export const WhySaarthi: React.FC = () => {
                     "inline-block text-lg sm:text-xl font-bold tracking-tight group-hover:translate-x-1.5 transition-all duration-300",
                     isActive ? "text-[#0F172A]" : "text-slate-400 group-hover:text-slate-600"
                   )}>
-                    {item.title}
+                    {t(item.titleKey)}
                   </span>
                   <ChevronRight 
                     className={cn(
@@ -340,12 +345,12 @@ export const WhySaarthi: React.FC = () => {
                       <div className="pb-8 pr-6">
                         {/* Description */}
                         <p className="text-base sm:text-lg text-slate-500 font-normal leading-relaxed">
-                          {item.description}
+                          {t(item.descKey)}
                         </p>
 
                         {/* Bullet Items */}
                         <ul className="mt-4 space-y-2.5">
-                          {item.bullets.map((bullet, bIdx) => (
+                          {bullets.map((bullet, bIdx) => (
                             <li 
                               key={bIdx} 
                               className="flex items-center gap-2.5 text-sm sm:text-base text-slate-600 font-normal"
@@ -356,7 +361,7 @@ export const WhySaarthi: React.FC = () => {
                           ))}
                         </ul>
 
-                        {/* Mobile-only visual mockup block rendered inline */}
+                        {/* Mobile-only mockup */}
                         <div className="lg:hidden mt-6 w-full bg-[#F5F5F7] rounded-[24px] border border-slate-100 flex items-center justify-center p-4">
                           <VisualShowcase activeIndex={index} />
                         </div>
@@ -369,7 +374,7 @@ export const WhySaarthi: React.FC = () => {
           })}
         </div>
 
-        {/* RIGHT COLUMN: STICKY VISUAL BOARD (2/5 width on desktop, hidden on mobile) */}
+        {/* RIGHT COLUMN: STICKY VISUAL BOARD */}
         <div className="hidden lg:block lg:col-span-2 sticky top-[20vh]">
           <div className="w-full aspect-square bg-[#F5F5F7] rounded-[32px] border border-slate-100/50 flex items-center justify-center overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.01)]">
             <VisualShowcase activeIndex={activeIndex} />

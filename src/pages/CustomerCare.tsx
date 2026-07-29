@@ -9,9 +9,11 @@ import {
   Sparkles,
   ChevronDown
 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../utils/cn';
+import { useTranslation } from 'react-i18next';
 
 export const CustomerCare: React.FC = () => {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [category, setCategory] = useState('Suggestion');
@@ -39,10 +41,10 @@ export const CustomerCare: React.FC = () => {
         {/* HEADER */}
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Customer Care
+            {t('customerCare.title')}
           </h1>
           <p className="text-sm text-slate-500 font-normal mt-1 leading-relaxed">
-            Send us your suggestions, report issues, or query eligibility guidelines directly.
+            {t('customerCare.desc')}
           </p>
         </div>
 
@@ -58,37 +60,37 @@ export const CustomerCare: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-slate-900 tracking-tight">
-                    Submit Suggestions
+                    {t('customerCare.submit')}
                   </h3>
                   <p className="text-xs text-slate-400">We respond within 24 hours</p>
                 </div>
               </div>
 
               <p className="text-sm text-slate-500 font-normal leading-relaxed">
-                Your feedback helps us refine Saarthi's opportunity matching algorithms. Share your experience or request benefits not currently listed.
+                {t('customerCare.descLeft')}
               </p>
 
               {/* Stats badges */}
               <div className="flex flex-col gap-3.5 mt-2">
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>Secure SSL Encryption</span>
+                  <span>{t('customerCare.ssl')}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
                   <Users className="w-4 h-4 text-blue-500" />
-                  <span>Dedicated Welfare Desk Support</span>
+                  <span>{t('customerCare.welfareDesk')}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
                   <Sparkles className="w-4 h-4 text-indigo-500" />
-                  <span>AI Smart Ticket Router</span>
+                  <span>{t('customerCare.aiRouter')}</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-6 border-t border-slate-100 flex flex-col gap-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Direct Hotline</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('customerCare.directHotline')}</span>
               <a href="mailto:support@saarthi.ai" className="text-sm font-bold text-[#2563EB] hover:underline flex items-center gap-1.5">
-                <Mail className="w-4 h-4 text-slate-4-400" />
+                <Mail className="w-4 h-4 text-slate-400" />
                 <span>support@saarthi.ai</span>
               </a>
             </div>
@@ -109,20 +111,20 @@ export const CustomerCare: React.FC = () => {
                 >
                   {/* Name */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Full Name</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">{t('auth.fullName')}</label>
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Enter your name"
+                      placeholder={t('auth.enterName')}
                       className="w-full bg-slate-50 hover:bg-slate-100/50 border border-slate-200 hover:border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/60 transition-all duration-200"
                     />
                   </div>
 
                   {/* Email */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">{t('auth.email')}</label>
                     <input
                       type="email"
                       required
@@ -133,7 +135,7 @@ export const CustomerCare: React.FC = () => {
                     />
                   </div>
 
-                  {/* Suggestion Category - FULLY CUSTOM BEAUTIFUL DROPDOWN */}
+                  {/* Suggestion Category */}
                   <div className="flex flex-col gap-1.5 relative">
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Topic Category</label>
                     <input type="hidden" name="category" value={category} />
@@ -149,7 +151,7 @@ export const CustomerCare: React.FC = () => {
                         {category === 'Eligibility Issue' && 'Profile / Eligibility Bug'}
                         {category === 'Other' && 'Other Query'}
                       </span>
-                      <ChevronDown className="w-4 h-4 text-slate-455 shrink-0" />
+                      <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
                     </button>
 
                     {isCategoryDropdownOpen && (
@@ -173,7 +175,7 @@ export const CustomerCare: React.FC = () => {
                                 "w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer select-none active:scale-98",
                                 category === opt.value
                                   ? "text-[#2563EB] bg-blue-50/50"
-                                  : "text-slate-655 hover:bg-slate-50"
+                                  : "text-slate-600 hover:bg-slate-50"
                               )}
                             >
                               {opt.label}
@@ -202,7 +204,7 @@ export const CustomerCare: React.FC = () => {
                     type="submit"
                     className="w-full bg-[#2563EB] hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition-all cursor-pointer select-none text-sm text-center active:scale-98 shadow-sm flex items-center justify-center gap-2 mt-2"
                   >
-                    <span>Submit Suggestion</span>
+                    <span>{t('customerCare.submit')}</span>
                     <Send className="w-3.5 h-3.5 fill-current" />
                   </button>
                 </motion.form>
@@ -218,9 +220,9 @@ export const CustomerCare: React.FC = () => {
                     <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-xl text-slate-900">Suggestion Submitted!</h3>
+                    <h3 className="font-extrabold text-xl text-slate-900">{t('customerCare.submitted')}</h3>
                     <p className="text-xs text-slate-400 max-w-sm mt-1.5 leading-relaxed">
-                      Thank you for your valuable feedback, <span className="font-semibold text-slate-700">{name}</span>. Our desk team has routed this ticket and will review it immediately.
+                      {t('customerCare.submittedThanks', { name })}
                     </p>
                   </div>
                 </motion.div>
