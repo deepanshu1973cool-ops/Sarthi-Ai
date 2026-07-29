@@ -219,7 +219,10 @@
     "checkConfirmEmail": "Registration successful! Please check your email for a confirmation link.",
     "fillAll": "Please fill in all fields.",
     "invalidEmail": "Please enter a valid email address.",
-    "setupProfileFirst": "Please set up your profile details."
+    "setupProfileFirst": "Please set up your profile details.",
+    "passwordRequirement": "Must be at least 6 characters",
+    "passwordTooShort": "Password must be at least 6 characters long.",
+    "emailAlreadyRegisteredDifferentName": "An account with this email is already registered under a different name."
   },
   "profileSetup": {
     "title": "Complete Your Profile",

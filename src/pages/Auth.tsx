@@ -3,6 +3,7 @@ import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Logo } from '../components/shared/Logo';
 import { supabase } from '../services/supabaseClient';
 import { useTranslation } from 'react-i18next';
+import { cn } from '../utils/cn';
 
 export interface AuthUser {
   name: string;
@@ -42,10 +43,35 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
 
     setErrorMsg(null);
     setSuccessMsg(null);
+
+    if (isSignUp && password.length < 6) {
+      setErrorMsg(t('auth.passwordTooShort'));
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       if (isSignUp) {
+        // Query to check if the email already exists under a different name
+        const { data: existingUsers, error: checkError } = await supabase
+          .from('user_emails')
+          .select('full_name')
+          .eq('email', email.trim().toLowerCase());
+
+        if (checkError) {
+          console.error('Error checking existing email:', checkError);
+        }
+
+        if (existingUsers && existingUsers.length > 0) {
+          const registeredName = existingUsers[0].full_name;
+          if (registeredName && registeredName.toLowerCase() !== name.trim().toLowerCase()) {
+            setErrorMsg(t('auth.emailAlreadyRegisteredDifferentName'));
+            setIsLoading(false);
+            return;
+          }
+        }
+
         // Sign up with Supabase
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -216,6 +242,17 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess, onBackToExplore }) =
                 {showPassword ? t('auth.hide') : t('auth.show')}
               </button>
             </div>
+            {isSignUp && (
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-semibold transition-colors duration-200">
+                <div className={cn(
+                  "w-1.5 h-1.5 rounded-full transition-all duration-200",
+                  password.length >= 6 ? "bg-emerald-500 scale-110 shadow-sm shadow-emerald-500/20" : "bg-slate-300"
+                )} />
+                <span className={password.length >= 6 ? "text-emerald-600" : "text-slate-400"}>
+                  {t('auth.passwordRequirement')}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Sign In CTA Button */}
